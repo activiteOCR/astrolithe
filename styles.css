@@ -786,6 +786,343 @@ em {
     }
 }
 
+/* =============================================
+   AGENDA / EVENTS SECTION
+   ============================================= */
+
+.section-agenda {
+    background: var(--color-bg-light);
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.events-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--color-bg-card);
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+}
+
+.events-placeholder p {
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.events-placeholder.events-error {
+    border-color: rgba(168, 124, 124, 0.5);
+}
+
+.events-loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.event-card {
+    background: var(--color-bg-card);
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    transition: all var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+
+.event-card.event-full {
+    opacity: 0.7;
+}
+
+.event-card.event-full:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.event-date-badge {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    color: var(--color-bg);
+    padding: 1rem;
+    text-align: center;
+}
+
+.event-day {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.event-month {
+    display: block;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+}
+
+.event-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-primary-light);
+}
+
+.event-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.event-time,
+.event-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.event-time svg,
+.event-location svg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-primary);
+}
+
+.event-description {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.event-price {
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+}
+
+.event-spots {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
+.event-spots.spots-low {
+    color: #d4a574;
+}
+
+.event-spots.spots-full {
+    color: #a87c7c;
+}
+
+.btn-register {
+    width: 100%;
+    margin-top: auto;
+}
+
+.btn-register:disabled {
+    background: var(--color-text-muted);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.btn-register:disabled:hover {
+    transform: none;
+    background: var(--color-text-muted);
+}
+
+/* =============================================
+   REGISTRATION MODAL
+   ============================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(13, 13, 26, 0.9);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color var(--transition);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--color-primary);
+}
+
+.modal-header {
+    padding: 2rem 2rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h3 {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.modal-event-title {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+}
+
+.modal-event-date {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.registration-form {
+    padding: 1.5rem 2rem 2rem;
+}
+
+.registration-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.registration-form .btn {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.form-message-error {
+    padding: 1rem;
+    margin: 1rem 2rem 0;
+    border-radius: 4px;
+    text-align: center;
+    background: rgba(168, 124, 124, 0.2);
+    border: 1px solid rgba(168, 124, 124, 0.5);
+    color: #d4a5a5;
+}
+
+.form-message-success {
+    padding: 1rem;
+    margin: 1rem 2rem 0;
+    border-radius: 4px;
+    text-align: center;
+    background: rgba(124, 156, 168, 0.2);
+    border: 1px solid rgba(124, 156, 168, 0.5);
+    color: #a5c9d4;
+}
+
+/* =============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================= */
+
+@media (max-width: 768px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+
+    .modal-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .registration-form {
+        padding: 1.25rem 1.5rem 1.5rem;
+    }
+}
+
 @media (max-width: 480px) {
     h1 {
         font-size: 2rem;

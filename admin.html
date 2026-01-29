@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Astrolithe Son et Astres</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <h1>Astrolithe</h1>
+            <p class="login-subtitle">Administration</p>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Mot de passe</label>
+                    <input type="password" id="login-password" name="password" required autocomplete="current-password">
+                </div>
+                <div id="login-error" class="form-message form-message-error" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
+            <a href="index.html" class="back-link">Retour au site</a>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="admin-dashboard" style="display: none;">
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <h1>Administration</h1>
+                <div class="admin-header-actions">
+                    <span id="admin-user-email" class="admin-user"></span>
+                    <button id="logout-btn" class="btn btn-secondary btn-small">Déconnexion</button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="admin-nav">
+            <button class="admin-tab active" data-tab="events">Événements</button>
+            <button class="admin-tab" data-tab="registrations">Inscriptions</button>
+        </nav>
+
+        <main class="admin-main">
+            <!-- Events Tab -->
+            <div id="events-tab" class="admin-tab-content active">
+                <div class="admin-section-header">
+                    <h2>Gestion des événements</h2>
+                    <button id="new-event-btn" class="btn btn-primary">Nouvel événement</button>
+                </div>
+
+                <div id="events-list" class="admin-list">
+                    <!-- Events will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Registrations Tab -->
+            <div id="registrations-tab" class="admin-tab-content">
+                <div class="admin-section-header">
+                    <h2>Inscriptions</h2>
+                    <div class="filter-group">
+                        <label for="event-filter">Filtrer par événement:</label>
+                        <select id="event-filter">
+                            <option value="">Tous les événements</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="registrations-list" class="admin-list">
+                    <!-- Registrations will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Event Form Modal -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content modal-large">
+            <button class="modal-close" aria-label="Fermer">&times;</button>
+            <div class="modal-header">
+                <h3 id="event-modal-title">Nouvel événement</h3>
+            </div>
+            <form id="event-form" class="admin-form">
+                <input type="hidden" id="event-id" name="id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-title">Titre *</label>
+                        <input type="text" id="event-title" name="title" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-date">Date *</label>
+                        <input type="date" id="event-date" name="event_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-time">Heure *</label>
+                        <input type="time" id="event-time" name="event_time" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-location">Lieu</label>
+                        <input type="text" id="event-location" name="location" value="Saint-Zacharie">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-max">Places max *</label>
+                        <input type="number" id="event-max" name="max_participants" min="1" value="8" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-price">Prix minimum (€)</label>
+                        <input type="number" id="event-price" name="min_price" min="0" step="0.01" value="0">
+                    </div>
+                    <div class="form-group form-group-checkbox">
+                        <label>
+                            <input type="checkbox" id="event-active" name="is_active" checked>
+                            Événement actif
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="event-description">Description</label>
+                    <textarea id="event-description" name="description" rows="4"></textarea>
+                </div>
+                <div id="event-form-error" class="form-message form-message-error" style="display: none;"></div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEventModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h3 id="confirm-title">Confirmation</h3>
+            </div>
+            <p id="confirm-message" class="confirm-message"></p>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Annuler</button>
+                <button type="button" id="confirm-action-btn" class="btn btn-danger">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
