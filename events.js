@@ -134,7 +134,7 @@ function createEventCard(event) {
                 <button
                     class="btn btn-primary btn-register"
                     ${isFull ? 'disabled' : ''}
-                    onclick="openRegistrationModal('${event.id}', '${escapeHtml(event.title)}', '${dayNumber} ${monthName} ${year}', '${timeFormatted}')"
+                    onclick="openRegistrationModal('${event.id}', '${escapeJsString(event.title)}', '${dayNumber} ${monthName} ${year}', '${timeFormatted}')"
                 >
                     ${isFull ? 'Complet' : "S'inscrire"}
                 </button>
@@ -343,6 +343,12 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Utilitaire pour échapper les chaînes JavaScript (pour les attributs onclick)
+function escapeJsString(text) {
+    if (!text) return '';
+    return text.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
 // Export des fonctions globales

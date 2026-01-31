@@ -245,7 +245,7 @@ function createAdminEventCard(event) {
             </div>
             <div class="admin-card-actions">
                 <button class="btn btn-secondary btn-small" onclick="editEvent('${event.id}')">Modifier</button>
-                <button class="btn btn-danger btn-small" onclick="confirmDeleteEvent('${event.id}', '${escapeHtml(event.title)}')">Supprimer</button>
+                <button class="btn btn-danger btn-small" onclick="confirmDeleteEvent('${event.id}', '${escapeJsString(event.title)}')">Supprimer</button>
             </div>
         </div>
     `;
@@ -507,7 +507,7 @@ function createRegistrationCard(registration) {
                 <p style="font-size: 0.8rem; color: var(--color-text-muted);">Inscrit le ${createdAt}</p>
             </div>
             <div class="admin-card-actions">
-                <button class="btn btn-danger btn-small" onclick="confirmDeleteRegistration('${registration.id}', '${escapeHtml(registration.name)}')">Supprimer</button>
+                <button class="btn btn-danger btn-small" onclick="confirmDeleteRegistration('${registration.id}', '${escapeJsString(registration.name)}')">Supprimer</button>
             </div>
         </div>
     `;
@@ -587,6 +587,12 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Utilitaire pour échapper les chaînes JavaScript (pour les attributs onclick)
+function escapeJsString(text) {
+    if (!text) return '';
+    return text.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
 // Export global functions
