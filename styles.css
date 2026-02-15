@@ -396,10 +396,9 @@ em {
     max-width: 300px;
     width: 100%;
     height: auto;
-    border-radius: 50%;
+    border-radius: 16px;
     object-fit: cover;
     object-position: center 20%;
-    aspect-ratio: 1;
     border: 3px solid var(--color-border);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
