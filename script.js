@@ -124,7 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         showFormMessage('Merci pour ton message ! Je te répondrai bientôt.', 'success');
                         contactForm.reset();
                     } else {
-                        throw new Error('Erreur lors de l\'envoi');
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(`Erreur ${response.status} : ${errorData.error || JSON.stringify(errorData)}`);
                     }
                 } else {
                     // Fallback: create mailto link
@@ -138,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showFormMessage('Redirection vers ton application mail...', 'success');
                 }
             } catch (error) {
-                showFormMessage('Une erreur est survenue. Tu peux m\'écrire directement à sonetastres@gmail.com', 'error');
+                showFormMessage(error.message || 'Une erreur est survenue.', 'error');
             } finally {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
