@@ -25,6 +25,7 @@
                 <li><a href="#evenements">Evenements</a></li>
                 <li><a href="#qui-je-suis">Qui je suis</a></li>
                 <li><a href="#activites">Activités</a></li>
+                <li><a href="#temoignages">Témoignages</a></li>
                 <li><a href="#infos">Infos pratiques</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -252,6 +253,34 @@
         </div>
     </section>
 
+    <!-- Témoignages -->
+    <section id="temoignages" class="section section-testimonials">
+        <div class="container">
+            <h2>Vos ressentis après séance</h2>
+            <p class="section-intro">Des mots partagés après l'expérience, simplement.</p>
+
+            <div id="testimonials-grid" class="testimonials-grid">
+                <!-- Les témoignages approuvés seront chargés ici -->
+            </div>
+
+            <div class="testimonial-form-container">
+                <h3>Partager ton ressenti</h3>
+                <form id="testimonial-form" class="testimonial-form">
+                    <div class="form-group">
+                        <label for="testimonial-name">Prénom *</label>
+                        <input type="text" id="testimonial-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="testimonial-content">Ton ressenti *</label>
+                        <textarea id="testimonial-content" name="content" rows="5" required placeholder="Décris ce que tu as ressenti lors de la séance..."></textarea>
+                    </div>
+                    <div id="testimonial-message" class="form-message" style="display:none;"></div>
+                    <button type="submit" class="btn btn-primary">Envoyer mon ressenti</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- Informations pratiques -->
     <section id="infos" class="section section-info">
         <div class="container">
@@ -365,6 +394,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="events.js"></script>
+    <script src="testimonials.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

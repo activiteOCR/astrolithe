@@ -111,6 +111,7 @@ function showDashboard() {
 
     loadAdminEvents();
     loadRegistrations();
+    loadAdminTestimonials();
 }
 
 function showLoginError(message) {
@@ -537,6 +538,98 @@ function confirmDeleteRegistration(regId, name) {
 }
 
 // =============================================
+// TESTIMONIALS MANAGEMENT
+// =============================================
+
+async function loadAdminTestimonials() {
+    const listEl = document.getElementById('testimonials-list');
+    if (!listEl) return;
+
+    listEl.innerHTML = '<div class="admin-list-empty">Chargement...</div>';
+
+    try {
+        const { data: testimonials, error } = await window.supabaseClient
+            .from('testimonials')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!testimonials || testimonials.length === 0) {
+            listEl.innerHTML = '<div class="admin-list-empty">Aucun témoignage pour le moment.</div>';
+            return;
+        }
+
+        listEl.innerHTML = testimonials.map(t => createAdminTestimonialCard(t)).join('');
+
+    } catch (error) {
+        console.error('Error loading testimonials:', error);
+        listEl.innerHTML = '<div class="admin-list-empty">Erreur lors du chargement des témoignages.</div>';
+    }
+}
+
+function createAdminTestimonialCard(t) {
+    const createdAt = new Date(t.created_at).toLocaleDateString('fr-FR', {
+        day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    return `
+        <div class="admin-card registration-card">
+            <div class="registration-info">
+                <strong>${escapeHtml(t.name)}</strong>
+                <p><em>"${escapeHtml(t.content)}"</em></p>
+                <p style="font-size: 0.8rem; color: var(--color-text-muted);">Reçu le ${createdAt}</p>
+                <span class="status-badge ${t.approved ? 'status-active' : 'status-inactive'}">
+                    ${t.approved ? 'Publié' : 'En attente'}
+                </span>
+            </div>
+            <div class="admin-card-actions">
+                ${!t.approved ? `<button class="btn btn-secondary btn-small" onclick="approveTestimonial('${t.id}')">Approuver</button>` : ''}
+                <button class="btn btn-danger btn-small" onclick="confirmDeleteTestimonial('${t.id}', '${escapeJsString(t.name)}')">Supprimer</button>
+            </div>
+        </div>
+    `;
+}
+
+async function approveTestimonial(id) {
+    try {
+        const { error } = await window.supabaseClient
+            .from('testimonials')
+            .update({ approved: true })
+            .eq('id', id);
+
+        if (error) throw error;
+
+        loadAdminTestimonials();
+    } catch (error) {
+        console.error('Error approving testimonial:', error);
+        alert('Erreur lors de l\'approbation');
+    }
+}
+
+function confirmDeleteTestimonial(id, name) {
+    openConfirmModal(
+        'Supprimer le témoignage',
+        `Êtes-vous sûr de vouloir supprimer le témoignage de "${name}" ?`,
+        async () => {
+            try {
+                const { error } = await window.supabaseClient
+                    .from('testimonials')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                loadAdminTestimonials();
+            } catch (error) {
+                console.error('Error deleting testimonial:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+    );
+}
+
+// =============================================
 // CONFIRMATION MODAL
 // =============================================
 
@@ -599,5 +692,7 @@ function escapeJsString(text) {
 window.editEvent = editEvent;
 window.confirmDeleteEvent = confirmDeleteEvent;
 window.confirmDeleteRegistration = confirmDeleteRegistration;
+window.approveTestimonial = approveTestimonial;
+window.confirmDeleteTestimonial = confirmDeleteTestimonial;
 window.closeEventModal = closeEventModal;
 window.closeConfirmModal = closeConfirmModal;
